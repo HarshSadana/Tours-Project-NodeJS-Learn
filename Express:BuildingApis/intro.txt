@@ -1,0 +1,33 @@
+What is Express?
+1. Express is a minimal node.js framework, a higher level of abstraction.
+
+2. Express contains a very robust set of features: complex routing, easier handling of requests and responses, middleware, server-side rendering etc.
+
+3. Express allows for the rapid development of node.js applications; we don't have to reinvent the wheel.
+
+4. Express makes it easier to organize our application into the MVC architecture.
+
+What is API?
+Application Programming Interface (API) is a piece of software that can be used by another piece of software, in order to allow applications to talk to eah other.
+
+The REST Architecture ->
+
+Certain principles must be followed for building the REST APIS.
+
+1. Separate API into logical resources.
+All the data that we want to share in the API must be divided into proper resources.
+A Resource is the object or representaion of something which has data associated with it. Eg tours, users etc.
+
+2. Expose structured, resource-based URLs
+for eg -> https://wwww.natours.com/addNewTour
+addNewTour is the endpoint.
+
+3. Use HTTP methods (verbs)
+get, post, put(to update the entire), patch (to update the part), delete
+
+4. Send data as JSON(usually)
+JSON means combining arrays and objects.
+Not only in javascript , used by many languages.
+(Refer to the screenshot)
+
+5. Stateless RESTful API: All state is handled on the client. This means that each request must contain  all the information necessary to process a certain request. The server should not have to remember the previous requests.

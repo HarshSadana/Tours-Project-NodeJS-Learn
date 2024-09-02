@@ -1,0 +1,181 @@
+Node.Js is a Javascript Runtime built on Google's Open-Source V8 Javascript Engine.
+
+Since Browser understands HTML, CSS and Javascipt, but if we want to run javascript outside the browser, we can use NodeJs. NodeJs acts as the container in which the javascipt runs.
+
+Node.Js Pros ->
+1. Single threaded, based on event driven, non-blocking I/O model.
+2. Perfect for building fast and scalable dat-intensive apps.
+3. Companies like Netflix Uber Paypal ebay have started using Node in production.
+4. Javascript across the entire stack: faster and more efficient development.
+5. NPM: uge library of open source packages available for free.
+Very active developer community.
+
+Use Node.Js ->
+API with database behind it (preferably NoSQL)
+Data Streaming (think Youtube).
+Real-time chat application.
+Server-Side web application.
+
+Don't Use ->
+Applications with heavy server-side processing (CPU-intensive).
+For eg - File Conversions, heavy image processing and videos conversions.
+
+
+////////////////////////////////////////////////////////////////
+How to run javascript outside of the browser.
+Just type node into your terminal and node REPL will open, after openeing you can execute your javascript.
+
+To exit Node REPL just enter .exit
+
+
+////////////////////////////////////////////////////
+Synchronous VS Asynchronous Code (Blocking Vs Non Blocking)
+
+Writing Synchronous code blocks our rest of the program, Synchronous code means executing the code line by line. fs.readFileSync was the example of Synchronous.
+But Asynchronous is just opposite. I executes in the background and does'nt blocks our code.
+
+Thread -> a set of instructions to execute the work.
+Node.Js works on the single threaded IO Model.
+
+Since multiple users will access our application and Node.js works on the single thread, so writing the synchronous code will be a major problem, if any one task is taking a lot of time, so most of the users will also not be able to access the application.
+
+///////////////////////////////////////////////////
+
+Whenever you start any project of node always use command -> npm init
+
+Dependencies vs Dev Dependency ->
+Dependency - These are the packages that your application needs to run in a production environment. They are essential for the functioning of your application and are required during runtime. eg -> express
+
+Dev Dependency - These are the packages that are only needed during the development and testing phase of your application. eg -> nodemon
+
+In the node modules folder, there is the storage of all of your packages that are written in the package.json file. Node modules also store the Dependencies of the dependencies.
+
+//////////////////////////////////////// Package Versioning and Updating -> 
+"nodemon": "^1.18.11"  // 1 is the major version (for breaking changes), 18 is the minor version (for some new features), 11 is the version number for error fixes, this version came when some error is resolved.
+^ this symbol denotes that we accept patch and minor update releases.
+
+How to update the packages ->
+npm outdated - It will give the list of all the outdated installed packages.
+npm install slugify@1.0.0 - To install the particular version of the package.
+
+Suppose you installed the older version and now you want to install the updated version then use -> npm update slugify
+
+If in the package.json With version ^ is there then both the changes will be accepted minor changes and patch(error), after you write the update command.
+But if there is the ~ sign then only the patch changes will be accepted, after you write the update command.
+But if there is the * sign then all the three changes will be accepted, after you write the update command.
+
+
+To delete a particular package, use ->
+npm uninstall <package_name>
+
+we don't add node modules folder to the github or in the production, this folder can be installed just by writing the npm install command. 
+
+What is the use of the package.lock.json?
+It holds the correct version of the packages that we are using in our project. This folder is also carried to the github.
+
+
+///////////////////////////////////////////
+Introduction To The Backend Web Development ->
+
+What happens when we access a webpage. It works on the client-server model or the request-response model.
+
+Suppose you access a website https://www.google.com/maps
+google.com is the domain name which is converted to the actual address through DNS (Domain name system)
+maps is the Resource
+
+Now after the conversion the real address looks like. https://216.58.211.216:443
+where 216.58.211.216 is the IP address and 443 is the port number (a kind of subaddress).
+
+Once we get the real web address a TCP/IP socket connection is been established between the client and the server.
+TCP/IP is the communication protocol. It defines how the data travels through the internet.
+After that a HTTP request is made between the client and the server.
+
+///////////////////////////////////////////////
+How Node.js Works : A Look Behind the scenes.
+
+Node runtime has several dependencies and the most important are the V8 javascript engine and the libuv
+
+V8 engine converts the javascipt code to the machine code.
+V8 is written in JS and CPP.
+
+libuv is the open source library with the strong focus on asynchronous IO, this layer gives node access to the computer's operating system, file system, networking and more.
+libuv is also responsible for the two more features of node.js Event Loop and Thread Pool
+
+In simple terms Event Loop is responsible for handling easy tasks such as executing callbacks and network IO and thread pool is for more heavy work like file access or compressions.
+Note -> Libuv is purely written in CPP.
+
+
+Processes, Threads and Thread Pool ->
+When use Node on a computer, that means the process is running on the computer.
+Instance of the program in execution is the process.
+In that process Node.js runs on a single thread, and thread is just the sequence of instructions.
+
+Since Node.js runs on the single thread, so if any user is using the application, so you have to make sure that nobody blocks that single thread by using the synchronous code, if that application is blocked no other users can access it.
+Node.js uses the single thread and one advantage of it is that it is the lightweight.
+
+Inside the single thread -> Initialize program -> Execute "top level" code -> Require modules -> Register event callbacks -> Start Event Loop
+
+Event Loop is the place where most of the work is done in your app. Some tasks in the event loop are too heavy to be executed, so that they can also block the single thread. 
+So here comes into picture the thread pool, now thread pool gives us 4 additional threads that are completely sepearated from the main thread, Now event loop can offload heavy tasks to the thread pool.
+examples of the heavy tasks are ->
+File System APIs
+Cryptography
+compressions
+DNS lookups
+
+The NodeJS Event Loop ->
+
+Note - NodeJS is built around the callback functions.
+
+What is inside the Event Loop -> All the application code that is inside the callback functions (non-top-level code)
+
+Event Driven Architecture is followed ->
+Events are emitted.
+Event Loops picks them up and puts them inside the specific callback queues.
+Callbacks are called.
+
+for eg -> Suppose new HTTP request is hit or finished file reading (these are the events that are emitted), now the event loop picks them up and the specific callback functions are called. And the more expensive tasks are offloaded to the thread pool.
+
+Event Loop in detail
+As soon as the NodeJs process starts, event loop also starts, there are multiple phases of the event loop, each phase has its own callback queue.
+
+First phase takes care of the callbacks of expired timer, For eg setTimeout function.
+If the timer expires later than the callback of that will be called, when the event loop comes back to that phase. It works like this in all 4 phases.
+When there is the first phase all the callback functions of the callback queue will be called one after the other.
+
+Second phase is the I/O polling and callbacks. Stuffs related to the file access and networking. all the callback functions related to this are put into this callback and are executed one by one. In this phase 99% of our code gets executed.
+
+Third is the setImmediate callbacks, this is the special type of timerthat is executed immediately after the I/O polling.
+
+Fourth is the close callbacks, these callbacks are executed when the server shuts down or closing any resources.
+
+There are also the other phase and the callback queues related to it. Process.NextTick() Queue and Other Microtasks Queue(Resolved Promises), These callback queues are executed after each of the phase.
+
+After all the phases it will check if there are any pending timers or I/O tasks available if no then exits and if yes then again the cycle is started.
+
+So event loop helps us in making asynchronous programming possible in node.js
+
+///////////////////////////////////// Events and Event Driven Architecture
+
+Event emitter (emits events)-> Event listener (calls) -> Attached callback function
+
+
+Intro to BAckend Architecture: MVC, Types Of Logic, and More ->
+Model -> Business Logic
+Controller -> Application Logic
+View -> Presentation Logic : When we build server side rendering websites.
+
+MVC Architecture in our Express App  --->
+
+Request -> Router -> Controller (Application Logic) -><- Model (Business Logic)
+Controller (Application Logic) -><- View (Presentation Logic)
+Controller -> Response
+
+Application Logic -> Code that is only concerned about the appliaction's implementation, not the underlying business problem we are trying to solev(eg. showing and selling tours)
+
+Business Logic -> Code that actually solves the business problem we set out to solve. eg -> creating tours in the database, validation user's input data.
+
+Note -> Fat models/thin controllers: offload as much as logic as possible into the models, keep the controllers as simple and lean as possible.
+
+
+
